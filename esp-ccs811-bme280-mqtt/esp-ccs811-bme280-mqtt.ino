@@ -57,7 +57,7 @@ const char* mqttPass = "<mqtt-password>";
 const char* mqttClientName = "<mqtt-client-id>"; //will also be used hostname and OTA name
 const char* mqttTopicPrefix = "<mqtt-topic-prefix>";
 
-//#define LED_BUILTIN 2 //ESP-12F has the builtin LED on GPIO2, uncomment for other boards
+#define LED_BUILTIN 2 //ESP-12F has the builtin LED on GPIO2, comment for other boards
 
 //CCS811
 //#define ADDR      0x5A
