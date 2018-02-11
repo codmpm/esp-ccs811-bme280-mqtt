@@ -6,9 +6,7 @@ I use the @AKStudios [CCS811 library](https://github.com/AKstudios/CCS811-librar
 
 This lib compensates the CCS811 not through temperature and pressure but through temperature and humidity.
 
-Currently I'm testing if my setup works and the values are reliable - so pleas see this as a work in progress.
-
-__Any Feedback and help is appreciated!__
+__ Currently I'm testing if my setup works and the values are reliable - so please see this as a work in progress. Any Feedback and help is appreciated!__
 
 ---
 
