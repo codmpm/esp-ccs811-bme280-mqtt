@@ -33,9 +33,10 @@ The read data get's dropped to the following topics using `<mqtt-topic-prefix>`.
 ## Created with
 - Arduino 1.8.1 (https://www.arduino.cc/)
 - ESP8266 board definition 2.4.0 (https://github.com/esp8266/Arduino)
+- Tasker (https://github.com/sticilface/Tasker)
 - PubSubClient 2.6.0 by Nick O'Leary (https://github.com/knolleary/pubsubclient)
-- CCS811 from https://github.com/AKstudios/CCS811-library
-- Sparkfun BME280 library from https://github.com/sparkfun/SparkFun_CCS811_Arduino_Library
+- AKStudios CCS811 Library (https://github.com/AKstudios/CCS811-library)
+- Sparkfun BME280 Library (https://github.com/sparkfun/SparkFun_CCS811_Arduino_Library)
 
 ### Credits
 Patrik Mayer, 2018 
