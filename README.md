@@ -26,7 +26,7 @@ The read data get's dropped to the following topics using `<mqtt-topic-prefix>`.
 <mqttTopicPrefix>pressure        pressure in hPa
 <mqttTopicPrefix>altitude        altitude in m
 <mqttTopicPrefix>co2             CO2 concentration in ppm
-<mqttTopicPrefix>tvoc            total volatile compund in ppb
+<mqttTopicPrefix>tvoc            total volatile compound in ppb
 ```
 
 

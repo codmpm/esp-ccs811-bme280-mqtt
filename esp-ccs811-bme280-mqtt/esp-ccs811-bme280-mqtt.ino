@@ -1,5 +1,5 @@
 /****************************************************
-  ESP8266 CSS811 compensated with BME280 with MQTT
+  ESP8266 CSS811 compensated via BME280 with MQTT
   2018, Patrik Mayer - patrik.mayer@codm.de
 
   mqtt client from https://github.com/knolleary/pubsubclient/
@@ -22,7 +22,7 @@
    <mqttTopicPrefix>pressure        pressure in hPa
    <mqttTopicPrefix>altitude        altitude in m
    <mqttTopicPrefix>co2             CO2 concentration in ppm
-   <mqttTopicPrefix>tvoc            total volatile compund in ppb
+   <mqttTopicPrefix>tvoc            total volatile compound in ppb
 
   If you want to read Farenheit/Feet change readTempC() to readTempF() and 
   readFloatAltitudeMeters() to readFloatAltitudeFeet()
