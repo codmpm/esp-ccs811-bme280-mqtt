@@ -10,9 +10,9 @@
 
   Connect the sensors via I2C, (SDA -> GPIO4 / SCL -> GPIO5). Don't forget 
   the I2C Pull-Ups.
-  Make sure you connect !WAKE of the CCS811 to GPIO14 on the ESP. Pin is
+  Make sure you connect !WAKE of the CCS811 to GPIO12 on the ESP. Pin is
   configurable but needed.
-  Serial is left open for debugging.
+  Serial is left open for debugging (115200).
 
   The following topics will be dropped to mqtt, all retained:
 
@@ -112,6 +112,31 @@ void setup() {
   sprintf(mqttTopicCO2, "%sco2", mqttTopicPrefix);
   sprintf(mqttTopicTVOC, "%stvoc", mqttTopicPrefix);
 
+  
+  if (!ccs811.begin(uint8_t(ADDR), uint8_t(WAKE_PIN))) {
+    Serial.println("CCS811 Initialization failed.");
+    while (1);
+  }
+
+
+  //Initialize BME280
+  myBME280.settings.commInterface = I2C_MODE;
+  myBME280.settings.I2CAddress = 0x77;
+  myBME280.settings.runMode = 3; //Normal mode
+  myBME280.settings.tStandby = 0;
+  myBME280.settings.filter = 4;
+  myBME280.settings.tempOverSample = 5;
+  myBME280.settings.pressOverSample = 5;
+  myBME280.settings.humidOverSample = 5;
+
+  //Calling .begin() causes the settings to be loaded
+  delay(10);  //Make sure sensor had enough time to turn on. BME280 requires 2ms to start up.
+
+  if (!myBME280.begin()) {
+    Serial.println("Could not find a valid BME280 sensor, check wiring!");
+    while (1);
+  }
+
   setup_wifi();
   mqttClient.setServer(mqttServer, 1883);
 
@@ -149,33 +174,9 @@ void setup() {
   });
   ArduinoOTA.begin();
 
+
+
   Serial.println("ready...");
-
-  if (!ccs811.begin(uint8_t(ADDR), uint8_t(WAKE_PIN))) {
-    Serial.println("CCS811 Initialization failed.");
-    while (1);
-  }
-
-
-  //Initialize BME280
-  myBME280.settings.commInterface = I2C_MODE;
-  myBME280.settings.I2CAddress = 0x77;
-  myBME280.settings.runMode = 3; //Normal mode
-  myBME280.settings.tStandby = 0;
-  myBME280.settings.filter = 4;
-  myBME280.settings.tempOverSample = 5;
-  myBME280.settings.pressOverSample = 5;
-  myBME280.settings.humidOverSample = 5;
-
-  //Calling .begin() causes the settings to be loaded
-  delay(10);  //Make sure sensor had enough time to turn on. BME280 requires 2ms to start up.
-
-
-  if (!myBME280.begin()) {
-    Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1);
-  }
-
   digitalWrite(LED_BUILTIN, LOW);
   delay(500);
   //ready, blink the led twice
@@ -184,7 +185,7 @@ void setup() {
     delay(200);
   }
 
-  //measure every <measureDelay> - GO!
+  //measure every <measureDelay>ms - GO!
   tasker.setInterval(meassureEnvironment, measureDelay);
 
 }
