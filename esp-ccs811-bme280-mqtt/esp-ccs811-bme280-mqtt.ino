@@ -9,9 +9,10 @@
   Tasker from https://github.com/sticilface/Tasker
 
   Connect the sensors via I2C, (SDA -> GPIO4 / SCL -> GPIO5). Don't forget 
-  the I2C Pull-Ups.
-  Make sure you connect !WAKE of the CCS811 to GPIO12 on the ESP. Pin is
-  configurable but needed.
+  the I2C Pull-Ups. 
+  The used Adafruit CCS811 library expects I2C address 0x5A, so configure your 
+  CCS811 accordingly.
+  !WAKE is currently not used.
   Serial is left open for debugging (115200).
 
   The following topics will be dropped to mqtt, all retained:
@@ -26,7 +27,8 @@
    <mqttTopicPrefix>tvoc            total volatile compound in ppb
 
   If you want to read Farenheit/Feet change readTempC() to readTempF() and 
-  readFloatAltitudeMeters() to readFloatAltitudeFeet()
+  readFloatAltitudeMeters() to readFloatAltitudeFeet(). 
+  ccs811.setEnvironmentalData() expects the temperature as °C
 
   ArduinoOTA is enabled, the mqttClientName is used as OTA name, see config.
 
@@ -41,7 +43,7 @@
 
 #include <Wire.h>
 
-#include <CCS811.h>
+#include "Adafruit_CCS811.h"
 #include <SparkFunBME280.h>
 
 
@@ -60,16 +62,14 @@ const char* mqttTopicPrefix = "<mqtt-topic-prefix>";
 #define LED_BUILTIN 2 //ESP-12F has the builtin LED on GPIO2, comment for other boards
 
 //CCS811
-//#define ADDR      0x5A
-#define ADDR      0x5B
-#define WAKE_PIN  14
+#define WAKE_PIN  15
 
 unsigned long measureDelay = 60000; //read every 60s
 
 //------------------------
 
 // internal vars
-CCS811 ccs811;
+Adafruit_CCS811 ccs811;
 BME280 myBME280;
 
 long lastReconnectAttempt = 0; //For the non blocking mqtt reconnect (in millis)
@@ -93,8 +93,8 @@ float bme280Humidity;
 float bme280Pressure;
 float bme280Altitude;
 
-int ccs811co2;
-int ccs811tvoc;
+uint16_t ccs811co2;
+uint16_t ccs811tvoc;
 
 void setup() {
   Serial.begin(115200);
@@ -113,11 +113,13 @@ void setup() {
   sprintf(mqttTopicTVOC, "%stvoc", mqttTopicPrefix);
 
   
-  if (!ccs811.begin(uint8_t(ADDR), uint8_t(WAKE_PIN))) {
+  if (!ccs811.begin()) {
     Serial.println("CCS811 Initialization failed.");
     while (1);
   }
 
+  //wait for ccs811 to be available
+  while(!ccs811.available());
 
   //Initialize BME280
   myBME280.settings.commInterface = I2C_MODE;
@@ -235,11 +237,13 @@ void meassureEnvironment(int) {
   Serial.print(bme280Humidity);
   Serial.println(" %");
 
-  ccs811.compensate(bme280TemperatureC, bme280Humidity);  // replace with t and rh values from sensor
-  ccs811.getData();
+  
+  ccs811.setEnvironmentalData(bme280Humidity, bme280TemperatureC); 
+  //wait for ccs811 reading
+  while(ccs811.readData());
 
-  ccs811co2 = ccs811.readCO2();
-  ccs811tvoc = ccs811.readTVOC();
+  ccs811co2 = ccs811.geteCO2();
+  ccs811tvoc = ccs811.getTVOC();
 
   Serial.print("CO2 concentration : ");
   Serial.print(ccs811co2);
@@ -249,7 +253,7 @@ void meassureEnvironment(int) {
   Serial.print(ccs811tvoc);
   Serial.println(" ppb");
 
-
+  
   char buf[8] = "";
   sprintf(buf, "%f", bme280TemperatureC);
   mqttClient.publish(mqttTopicTemperatureC, buf, true);
@@ -268,6 +272,7 @@ void meassureEnvironment(int) {
 
   sprintf(buf, "%d", ccs811tvoc);
   mqttClient.publish(mqttTopicTVOC, buf, true);
+  
 
   Serial.println();
 }

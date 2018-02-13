@@ -2,16 +2,14 @@
 
 This is a simple sketch to measure the air quality with the [CCS811 Air Quality Sensor](http://ams.com/eng/Products/Environmental-Sensors/Air-Quality-Sensors/CCS811). It get's compensated with an [Bosch BME280](https://www.bosch-sensortec.com/bst/products/all_products/bme280).
 
-I use the @AKStudios [CCS811 library](https://github.com/AKstudios/CCS811-library), as I can't get the Sparkfun/Adafruit Libs to work on the ESP8266. I always get an `I2C_ERROR`, any help on that?
-
-This lib compensates the CCS811 not through temperature and pressure but through temperature and humidity.
+I'm using the Adafruit CCS811 library which worked after I used the correct I2C address of 0x5A for my sensor.
 
 __Currently I'm testing if my setup works and the values are reliable - so please see this as a work in progress. Any Feedback and help is appreciated!__
 
 ---
 
 ![image of breadboard ](esp-ccs811-bme280-breadboard.jpg)
-
+Used here are the [Sparkfun CCS811](https://www.sparkfun.com/products/14193) and the [Adaferuit BME280](https://www.adafruit.com/product/2652) breakout.
 
 ## Config
 See the config section in the code, should be self-explaining :-)
@@ -29,13 +27,16 @@ The read data get's dropped to the following topics using `<mqtt-topic-prefix>`.
 <mqttTopicPrefix>tvoc            total volatile compound in ppb
 ```
 
+## Todo
+- Check Sparkfuns CCS811 lib 
+- better configuration
 
 ## Created with
 - Arduino 1.8.1 (https://www.arduino.cc/)
 - ESP8266 board definition 2.4.0 (https://github.com/esp8266/Arduino)
 - Tasker (https://github.com/sticilface/Tasker)
 - PubSubClient 2.6.0 by Nick O'Leary (https://github.com/knolleary/pubsubclient)
-- AKStudios CCS811 Library (https://github.com/AKstudios/CCS811-library)
+- Adafruit CCS811 Library (https://github.com/adafruit/Adafruit_CCS811)
 - Sparkfun BME280 Library (https://github.com/sparkfun/SparkFun_CCS811_Arduino_Library)
 
 ### Credits
