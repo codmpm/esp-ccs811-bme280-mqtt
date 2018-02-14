@@ -4,8 +4,8 @@
 
   mqtt client from https://github.com/knolleary/pubsubclient/
   Arduino OTA from ESP8266 Arduino Core V2.4
-  CCS811 from https://github.com/AKstudios/CCS811-library
-  BME280 from https://github.com/sparkfun/SparkFun_CCS811_Arduino_Library
+  Adafruit CCS811 from https://github.com/adafruit/Adafruit_CCS811
+  Sparkfun BME280 from https://github.com/sparkfun/SparkFun_CCS811_Arduino_Library
   Tasker from https://github.com/sticilface/Tasker
 
   Connect the sensors via I2C, (SDA -> GPIO4 / SCL -> GPIO5). Don't forget 
