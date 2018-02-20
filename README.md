@@ -12,7 +12,7 @@ __Currently I'm testing if my setup works and the values are reliable - so pleas
 Used here are the [Sparkfun CCS811](https://www.sparkfun.com/products/14193) and the [Adaferuit BME280](https://www.adafruit.com/product/2652) breakout.
 
 ## Config
-See the config section in the code, should be self-explaining :-)
+Before compiling, you must implement your config by copying the file `config.example.h` to `config.h` in directory `esp-ccs811-bme280-mqtt`. After that you have to fill or change the values in `config.h`.
 
 The read data get's dropped to the following topics using `<mqtt-topic-prefix>`. All values are retained, the online state is set to `offline` using mqtt's last-will.
 
@@ -41,6 +41,7 @@ The read data get's dropped to the following topics using `<mqtt-topic-prefix>`.
 
 ### Credits
 Patrik Mayer, 2018 
+Tobias Schmitt, 2018
 
 ### License
 MIT

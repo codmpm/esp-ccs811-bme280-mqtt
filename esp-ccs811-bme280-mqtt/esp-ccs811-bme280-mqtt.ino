@@ -46,27 +46,7 @@
 #include "Adafruit_CCS811.h"
 #include <SparkFunBME280.h>
 
-
-//--------- Configuration
-// WiFi
-const char* ssid = "<your-wifi-ssid>";
-const char* password = "<your-wifi-key>";
-
-// MQTT
-const char* mqttServer = "<mqtt-broker-ip-or-host>";
-const char* mqttUser = "<mqtt-user>";
-const char* mqttPass = "<mqtt-password>";
-const char* mqttClientName = "<mqtt-client-id>"; //will also be used hostname and OTA name
-const char* mqttTopicPrefix = "<mqtt-topic-prefix>";
-
-#define LED_BUILTIN 2 //ESP-12F has the builtin LED on GPIO2, comment for other boards
-
-//CCS811
-#define WAKE_PIN  15
-
-unsigned long measureDelay = 60000; //read every 60s
-
-//------------------------
+#include "config.h"
 
 // internal vars
 Adafruit_CCS811 ccs811;
