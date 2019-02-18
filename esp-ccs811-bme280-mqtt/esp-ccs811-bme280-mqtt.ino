@@ -76,6 +76,8 @@ float bme280Altitude;
 uint16_t ccs811co2;
 uint16_t ccs811tvoc;
 
+void meassureEnvironment(void);
+
 void setup() {
   Serial.begin(115200);
   Serial.println("Starting up...");
@@ -195,7 +197,7 @@ void loop() {
 
 }
 
-void meassureEnvironment(int) {
+void meassureEnvironment(void) {
   bme280TemperatureC = myBME280.readTempC();;
   bme280Humidity = myBME280.readFloatHumidity();
   bme280Pressure = myBME280.readFloatPressure();
